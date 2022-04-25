@@ -34,8 +34,7 @@ export default {
     }
   },
   methods: {
-    login () {
-      // this.$router.push('/user')
+    login () { // 发送登录请求
       const config = {
         url: '/apis/login',
         method: 'POST',
@@ -44,11 +43,10 @@ export default {
           password: this.password
         }
       }
-      this.$axios(config).then((res) => {
+      this.$axios(config).then((res) => { // 接收响应token保存到本地
         localStorage.setItem('token', res.data)
-        console.log(res.data)
-        this.$router.push('/user')
-      }).catch(err => console.log(err))
+        this.$router.push('/user') // 表明登录成功，跳转到user页面
+      }).catch(err => err)
     }
   },
   computed: {

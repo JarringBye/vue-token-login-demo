@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/user' // 默认进入user页面，如果token没有或者不对会返回login页面
   },
   {
     path: '/login',

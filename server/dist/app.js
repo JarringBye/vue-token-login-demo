@@ -1,49 +1,49 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const jwt = require('jsonwebtoken')
+
 const app = express()
 app.use(bodyParser.json({ limit: '1mb' }))
 app.use(bodyParser.urlencoded({
   extended: true
 }))
 app.use(express.static('./dist'))
-
+// 相当于用户账号密码存储库
 var userData = { kano: '123' }
+// jwt密钥
 const jwtKey = 'xiaobai'
+
 app.post('/login', (req, res) => {
-  console.log(req.body)
   const {
     account,
     password
   } = req.body
 
   if (userData[account] == null) {
-    return new Error('错误')
+    res.status(403).send('no this account')
+    return new Error('没有此账号')
   }
   const isMatch = userData[account] === password
-  console.log(userData[account], password)
   if (!isMatch) {
-    return new Error('cuowu')
+    res.status(403).send('account or password is wrong')
+    return new Error('用户名或密码错误')
   }
-  const token = jwt.sign({ _id: account }, jwtKey)
-  console.log(token)
+  const token = jwt.sign({ _id: account }, jwtKey) // 生成token
   res.send(token)
 })
 
 app.post('/userinfo', (req, res) => {
-  console.log(req.headers.authorization.slice(7))
   const token = (req.headers.authorization || '').slice(7)
   try {
     var parseToken = jwt.verify(token, jwtKey)
   } catch (err) {
-    res.status(401)
+    res.status(401) // token验证不成功，返回401状态码
     throw new Error(err)
   }
-  console.log(parseToken)
   if (!parseToken.account === req.body.account) {
     res.status(401)
   } else {
-    res.send('token正确')
+    return new Error('token验证失败')
   }
 })
 
