@@ -19,6 +19,12 @@ yarn build
 ```
 yarn lint
 ```
+### Run express server
+```
+node app.js
+```
+### Run express server
+
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
